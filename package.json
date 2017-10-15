@@ -1,0 +1,30 @@
+{
+  "name": "simple-json-template",
+  "version": "1.0.0",
+  "description": "Simple template engine to generate json structures",
+  "main": "index.js",
+  "repository": "https://github.com",
+  "author": "Steven Hermans",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist/* && (mkdir dist || true) && cp package.json dist && tsc -p tsconfig.build.json",
+    "setup": "yarn --freeze-lockfile",
+    "lint": "tslint --project tsconfig.json",
+    "watch": "rm -rf dist/* && (mkdir dist || true) && cp package.json dist && tsc -p tsconfig.json -w",
+    "clean": "rm -rf dist/*",
+    "test": "rm -rf dist/* && (mkdir dist || true) && cp package.json dist && tsc -p tsconfig.json && mocha ./dist/**/*.spec.js"
+  },
+  "dependencies": {
+    "vm2": "^3.5.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.3",
+    "@types/jasmine": "^2.5.54",
+    "@types/mocha": "^2.2.41",
+    "chai": "^4.1.1",
+    "jasmine": "^2.8.0",
+    "mocha": "^3.5.0",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
+  }
+}

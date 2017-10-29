@@ -6,5 +6,7 @@ export interface ScopeModel {
   path: string;
   this?: any;
   root?: any;
+  parent?: any;
+  vars?: any;
 
 }

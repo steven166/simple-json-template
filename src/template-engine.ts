@@ -1,4 +1,3 @@
-
 import { ReadResult, StringHelper } from "./helpers/string.helper";
 import { ScopeModel } from "./models/scope.model";
 import { VM } from "vm2";
@@ -27,6 +26,62 @@ export function render(template: any, data?: any): any {
   return renderAny(template, scope);
 }
 
+/**
+ * Render a Simple Json Template provided as file
+ * @param {string} templateFile file that contains a Simple Json Template
+ * @param {any | string} data used to render the template, can also be a file
+ * @returns {Promise<any>}
+ */
+export async function renderFromFile(templateFile: string, data?: any | string): Promise<any> {
+  const fileHelper = await import("./helpers/file.helper");
+  let templatePath = fileHelper.resolve(templateFile);
+
+  if (!await fileHelper.exists(templatePath)) {
+    throw new Error("Template file not found: " + templatePath);
+  }
+
+  let rawTemplate = (await fileHelper.readFile(templatePath)).toString();
+  let rawData = data;
+
+  if (data && typeof(data) === "string") {
+    let dataPath = fileHelper.resolve(data);
+    if (!await fileHelper.exists(dataPath)) {
+      throw new Error("Data file not found: " + dataPath);
+    }
+
+    rawData = (await fileHelper.readFile(dataPath)).toString();
+  }
+
+  return renderFromRaw(rawTemplate, rawData);
+}
+
+/**
+ * Render a Simple Json Template provided as raw text
+ * @param {string} rawTemplate Simple Json Template as JSON or YAML format
+ * @param {any | string} rawData as Object or a string in JSON or Yaml format
+ * @returns {Promise<any>}
+ */
+export async function renderFromRaw(rawTemplate: string, rawData?: any | string): Promise<any> {
+  const fileHelper = await import("./helpers/file.helper");
+  let template;
+  try {
+    template = await fileHelper.parseJsonOrYaml(rawTemplate);
+  } catch (e) {
+    throw new Error("Unable to parse template text as JSON or YAML")
+  }
+  let data = rawData;
+  if (rawData && typeof(rawData) === "string") {
+    try {
+      data = await fileHelper.parseJsonOrYaml(rawData);
+    } catch (e) {
+      throw new Error("Unable to parse data text as JSON or YAML")
+    }
+  }
+
+  return render(template, data);
+}
+
+
 export class TemplateEngine {
 
   /**
@@ -35,9 +90,23 @@ export class TemplateEngine {
    * @param data Data used to render the template
    * @returns {any} Rendered template
    */
-  public static render(template: any, data?: any): any {
-    return render(template, data);
-  }
+  public static render = render;
+
+  /**
+   * Render a Simple Json Template provided as file
+   * @param {string} templateFile file that contains a Simple Json Template
+   * @param {any | string} data used to render the template, can also be a file
+   * @returns {Promise<any>}
+   */
+  public static renderFromFile = renderFromFile;
+
+  /**
+   * Render a Simple Json Template provided as raw text
+   * @param {string} rawTemplate Simple Json Template as JSON or YAML format
+   * @param {any | string} rawData as Object or a string in JSON or Yaml format
+   * @returns {Promise<any>}
+   */
+  public static renderFromRaw = renderFromRaw;
 
 }
 

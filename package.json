@@ -15,11 +15,15 @@
     "test": "rm -rf dist/* && (mkdir dist || true) && cp package.json dist && tsc -p tsconfig.json && mocha \"./dist/**/*.spec.js\""
   },
   "dependencies": {
-    "vm2": "^3.5.2"
+    "vm2": "^3.5.2",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.3",
+    "@types/js-yaml": "^3.9.1",
     "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.47",
+    "@types/yamljs": "^0.2.30",
     "chai": "^4.1.1",
     "jasmine": "^2.8.0",
     "mocha": "^3.5.0",

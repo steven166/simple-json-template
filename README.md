@@ -9,7 +9,7 @@ A Simple JSON template engine to render JSON structured data
 ```yaml
 version: '3',
 services: 
-  '~~~for': 'services as service, i'
+  '~~~for': 'services as (service, i)'
   '${service.name}':
     image: 'myrepo/${service.name}:${service.version}'
     build:

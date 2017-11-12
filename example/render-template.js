@@ -4,7 +4,7 @@ var TemplateEngine = require("../dist/template-engine");
 var dockerComposeTemplate = {
   version: '3',
   services: {
-    "~~~for": "services as service, i",
+    "~~~for": "services as (service, i)",
     "${service.name}": {
       image: "myrepo/${service.name}:${service.version}",
       build: {

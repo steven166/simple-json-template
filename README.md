@@ -1,6 +1,7 @@
 # simple-json-template
 [![Build Status](https://travis-ci.org/steven166/simple-json-template.svg?branch=master)](https://travis-ci.org/steven166/simple-json-template)
 [![Coverage](https://img.shields.io/codecov/c/github/codecov/example-python/master.svg)](https://codecov.io/gh/steven166/simple-json-template)
+
 A Simple JSON template engine to render JSON structured data
 
 ## Example

@@ -136,6 +136,7 @@ The variable `_this` returns the current object where the expression is and the 
 
 ### ~~~if Statement
 The **if statement** can be used to show parts of template based on a condition. 
+
 **Example 1: if statement is true**
 ```js
 var result = TemplateEngine.render({
@@ -151,7 +152,8 @@ var result = TemplateEngine.render({
 //   }
 // }
 ```
-**Example 2: if statement is false **
+
+**Example 2: if statement is false**
 ```js
 var result = TemplateEngine.render({
   user: {
@@ -162,7 +164,8 @@ var result = TemplateEngine.render({
 // renders as:
 // {}
 ```
-**Example 3: if statement with ~~~then**
+
+**Example 3: if statement with then**
 ```js
 var result = TemplateEngine.render({
   user: {
@@ -182,7 +185,8 @@ var result = TemplateEngine.render({
 //   }
 // }
 ```
-**Example 4: if statement with ~~~else**
+
+**Example 4: if statement with else**
 ```js
 var result = TemplateEngine.render({
   user: {
@@ -204,7 +208,8 @@ var result = TemplateEngine.render({
 ```
 
 ### ~~~for Statement
-The **for statement** can be used for looping over a list. 
+The **for statement** can be used for looping over a list.
+
 **Example 1: loop over list**
 ```js
 var result = TemplateEngine.render({
@@ -226,6 +231,7 @@ var result = TemplateEngine.render({
 //     }]
 // }
 ```
+
 **Example 2: use index and length**
 ```js
 var result = TemplateEngine.render({
@@ -250,7 +256,8 @@ var result = TemplateEngine.render({
 //     }]
 // }
 ```
-**Example 3: loop using ~~~each**
+
+**Example 3: loop using each**
 ```js
 var result = TemplateEngine.render({
   user: {
@@ -273,6 +280,7 @@ var result = TemplateEngine.render({
 //     }]
 // }
 ```
+
 **Example 4: loop using property keys**
 ```js
 var result = TemplateEngine.render({

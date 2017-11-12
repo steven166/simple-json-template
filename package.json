@@ -7,12 +7,12 @@
   "author": "Steven Hermans",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf dist/* && (mkdir dist || true) && cp package.json README.md LICENSE.txt dist && tsc -p tsconfig.build.json",
+    "build": "rm -rf dist/* && (mkdir dist || true) && cp package.json README.md LICENSE.txt dist && ./node_modules/.bin/tsc -p tsconfig.build.json",
     "setup": "yarn --freeze-lockfile",
-    "lint": "tslint --project tsconfig.json",
-    "watch": "rm -rf dist/* && (mkdir dist || true) && cp package.json README.md LICENSE.txt dist && tsc -p tsconfig.json -w",
+    "lint": "./node_modules/.bin/tslint --project tsconfig.json",
+    "watch": "rm -rf dist/* && (mkdir dist || true) && cp package.json README.md LICENSE.txt dist && ./node_modules/.bin/tsc -p tsconfig.json -w",
     "clean": "rm -rf dist/*",
-    "test": "rm -rf dist/* && (mkdir dist || true) && cp package.json README.md LICENSE.txt dist && tsc -p tsconfig.json && nyc --reporter=lcovonly mocha \"./dist/**/*.spec.js\""
+    "test": "rm -rf dist/* && (mkdir dist || true) && cp package.json README.md LICENSE.txt dist && ./node_modules/.bin/tsc -p tsconfig.json && nyc --reporter=lcovonly mocha \"./dist/**/*.spec.js\""
   },
   "dependencies": {
     "vm2": "^3.5.2",

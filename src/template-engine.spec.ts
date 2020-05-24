@@ -373,5 +373,17 @@ describe("TemplateEngine", () => {
 
   });
 
+  describe("~~~raw", () => {
+
+    it("render ~~~raw string", () => {
+      let template: any = {
+        '~~~raw': "${hello}"
+      };
+
+      let result = TemplateEngine.render(template);
+      assert.deepEqual(result, "${hello}");
+    });
+
+  });
 
 });

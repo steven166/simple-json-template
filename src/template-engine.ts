@@ -11,6 +11,8 @@ const STATEMENT_ELSE = "~~~else";
 const STATEMENT_FOR = "~~~for";
 const STATEMENT_EACH = "~~~each";
 
+const STATEMENT_RAW = "~~~raw";
+
 
 /**
  * Render a Simple Json Template
@@ -181,57 +183,62 @@ function renderObject(template: any, scope: ScopeModel, parent: any, _this?: any
     thisScope = ModelHelper.merge(_this, template);
   }
 
-  // Resolve ~~~for statements without ~~~each
-  if (template.hasOwnProperty(STATEMENT_FOR) && !template.hasOwnProperty(STATEMENT_EACH)) {
-    let forAsProperties = Object.keys(template).filter(property => property.indexOf("${") !== -1);
-
-    // Normal loop and result array
-    let newScope = { ...scope };
-    newScope.this = thisScope;
-    newScope.parent = parent;
-    let renderedArray = renderFor(template, newScope, result, parent);
-
-    if (forAsProperties.length === 0 || !Array.isArray(renderedArray)) {
-      return renderedArray;
-    } else {
-      let mergedObject = {};
-      renderedArray.forEach(item => mergedObject = ModelHelper.merge(mergedObject, item));
-      return mergedObject;
-    }
-
+  // Resolve ~~~raw statements
+  if (template.hasOwnProperty(STATEMENT_RAW)) {
+    return template[STATEMENT_RAW];
   } else {
+    // Resolve ~~~for statements without ~~~each
+    if (template.hasOwnProperty(STATEMENT_FOR) && !template.hasOwnProperty(STATEMENT_EACH)) {
+      let forAsProperties = Object.keys(template).filter(property => property.indexOf("${") !== -1);
 
-    // Resolve properties
-    Object.keys(template)
-      .filter((property: string) => property.indexOf("~~~") !== 0)
-      .forEach((property: string) => {
+      // Normal loop and result array
+      let newScope = { ...scope };
+      newScope.this = thisScope;
+      newScope.parent = parent;
+      let renderedArray = renderFor(template, newScope, result, parent);
+
+      if (forAsProperties.length === 0 || !Array.isArray(renderedArray)) {
+        return renderedArray;
+      } else {
+        let mergedObject = {};
+        renderedArray.forEach(item => mergedObject = ModelHelper.merge(mergedObject, item));
+        return mergedObject;
+      }
+
+    } else {
+
+      // Resolve properties
+      Object.keys(template)
+        .filter((property: string) => property.indexOf("~~~") !== 0)
+        .forEach((property: string) => {
+          let newScope = { ...scope };
+          newScope.this = thisScope;
+          newScope.path = scope.path ? scope.path + "." + property : property;
+          newScope.parent = parent;
+
+          let value = template[property];
+          let renderedValue = renderAny(value, newScope, template);
+          let renderedProperty = renderString(property, newScope);
+          if (renderedValue !== undefined && renderedProperty !== undefined) {
+            result[renderedProperty] = renderedValue;
+          }
+        });
+
+      // Resolve ~~~if statements
+      if (template.hasOwnProperty(STATEMENT_IF)) {
         let newScope = { ...scope };
         newScope.this = thisScope;
-        newScope.path = scope.path ? scope.path + "." + property : property;
         newScope.parent = parent;
+        result = renderIf(template, newScope, result, parent);
+      }
 
-        let value = template[property];
-        let renderedValue = renderAny(value, newScope, template);
-        let renderedProperty = renderString(property, newScope);
-        if (renderedValue !== undefined && renderedProperty !== undefined) {
-          result[renderedProperty] = renderedValue;
-        }
-      });
-
-    // Resolve ~~~if statements
-    if (template.hasOwnProperty(STATEMENT_IF)) {
-      let newScope = { ...scope };
-      newScope.this = thisScope;
-      newScope.parent = parent;
-      result = renderIf(template, newScope, result, parent);
-    }
-
-    // Resolve ~~~for statements
-    if (template.hasOwnProperty(STATEMENT_FOR)) {
-      let newScope = { ...scope };
-      newScope.this = thisScope;
-      newScope.parent = parent;
-      result = renderFor(template, newScope, result, parent);
+      // Resolve ~~~for statements
+      if (template.hasOwnProperty(STATEMENT_FOR)) {
+        let newScope = { ...scope };
+        newScope.this = thisScope;
+        newScope.parent = parent;
+        result = renderFor(template, newScope, result, parent);
+      }
     }
 
     if (_this) {
@@ -385,7 +392,7 @@ function evalExpression(expression: string, scope: any): any {
     }
   });
   let vm = new VM({
-    timeout: 100,
+    timeout: 1000,
     sandbox: sandbox
   });
   try {

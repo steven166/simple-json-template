@@ -1,6 +1,6 @@
 {
   "name": "simple-json-template",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Simple template engine to generate json structures",
   "main": "index.js",
   "repository": "https://github.com",
@@ -15,20 +15,20 @@
     "test": "rm -rf dist/* && (mkdir dist || true) && cp package.json README.md LICENSE.txt dist && ./node_modules/.bin/tsc -p tsconfig.json && nyc --reporter=lcovonly mocha \"./dist/**/*.spec.js\""
   },
   "dependencies": {
-    "vm2": "^3.5.2",
-    "yamljs": "^0.3.0"
+    "js-yaml": "^3.14.0",
+    "vm2": "^3.9.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.3",
+    "@types/chai": "^4.2.11",
     "@types/js-yaml": "^3.9.1",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.47",
     "@types/yamljs": "^0.2.30",
-    "chai": "^4.1.1",
+    "chai": "^4.2.0",
     "jasmine": "^2.8.0",
-    "mocha": "^3.5.0",
-    "nyc": "^11.3.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.2"
+    "mocha": "^7.2.0",
+    "nyc": "^15.0.1",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.3"
   }
 }
